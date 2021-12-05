@@ -1,0 +1,41 @@
+<div class="absolute left-0 grid grid-cols-6 justify-items-center md:gap-4 w-full h-full bg-light1 border-b border-light2 animate-fadeup z-20" x-cloak x-data x-show="$store.showSearch" @click.away="$store.showSearch = false">
+    {%- if settings.predictive_search_enabled -%}
+        <predictive-search class="col-span-5 md:col-span-4 md:col-start-2 flex justify-center items-center relative h-full px-4 md:px-8 w-full" data-loading-text="{{ 'accessibility.loading' | t }}">
+      {%- endif -%}
+      <form class="w-full search relative" id="search-form" action="{{ routes.search_url }}" method="get" role="search">
+        <input class="placeholder-dark-placeholder" id="search-field-in-modal" type="search"
+          type="search"
+          name="q"
+          value=""
+          placeholder="{{ 'general.search.search' | t }}"
+          {%- if settings.predictive_search_enabled -%}
+            role="combobox"
+            aria-expanded="false"
+            aria-owns="predictive-search-results-list"
+            aria-controls="predictive-search-results-list"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false" 
+          {%- endif -%}
+        >
+          {%- if settings.predictive_search_enabled -%}
+            <div class="predictive-search predictive-search--header absolute w-full" tabindex="-1" data-predictive-search>
+              <div class="predictive-search__loading-state">
+                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+              </div>
+            </div>
+
+            <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+          {%- endif -%}
+      </form>
+      {%- if settings.predictive_search_enabled -%}
+      </predictive-search>
+    {%- endif -%} 
+      <button x-data @click="$store.showSearch = false" class="menu-icon col-span-1 h-full" aria-label="Mobile close">{% render 'aaa-icon-close' %}</button>
+  </div> 
+

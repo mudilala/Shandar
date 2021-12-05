@@ -1,0 +1,89 @@
+{
+  "sections": {
+    "aaa_image_banner": {
+      "type": "aaa-image-banner",
+      "settings":{},
+      "blocks":{
+        "heading" : {
+          "type": "heading",
+          "settings": {
+            "heading": "Now that is a catchy title",
+            "subheading": "And drop in the deets"
+          }
+        },
+        "buttons" :{
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_label_2": "Check out our deals"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "buttons"
+      ]
+    },
+    "aaa_collage": {
+      "type": "aaa-collage",
+      "settings":{},
+      "blocks": {
+        "video": {
+          "type": "video",
+          "settings": {
+            "video": "Video"
+          }
+        },
+        "product": {
+          "type": "collection",
+          "settings": {
+            "collection": "Collection"
+          }
+        },
+        "collection": {
+          "type": "product",
+          "settings": {
+            "product": "Product"
+          }
+        }
+      },
+      "block_order": [
+        "video",
+        "product",
+        "collection"
+      ]
+    },
+    "image_banner": {
+      "type": "image-banner",
+      "settings": {
+        "desktop_text_box_position": "flex-end"
+      },
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand"
+          }
+        },
+        "button": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_label_2": ""
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "button"
+      ]
+    }
+  },
+  "order": [
+    "aaa_image_banner",
+    "aaa_collage",
+    "image_banner"
+  ]
+}
