@@ -30,7 +30,6 @@
     {% render 'meta-tags' %}
 
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'alpine.js' | asset_url }}" defer="defer"></script>
     {{ content_for_header }}
 
     {%- liquid
@@ -40,16 +39,6 @@
     %}
 
     {% style %}
-      :root {
-        --color-background-accent1: {{ settings.color_background_accent1 }};
-        --color-background-accent2: {{ settings.color_background_accent2 }};
-        --color-background-light1: {{ settings.color_background_light1 }};
-        --color-background-light2: {{ settings.color_background_light2 }}; 
-        --color-text-light-default: {{ settings.color_text_light_default.red }}, {{ settings.color_text_light_default.green }}, {{ settings.color_text_light_default.blue }};
-        --color-text-dark-default: {{ settings.color_text_dark_default.red }}, {{ settings.color_text_dark_default.green }}, {{ settings.color_text_dark_default.blue }};
-      }
-
-
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ body_font_bold | font_face: font_display: 'swap' }}
       {{ body_font_italic | font_face: font_display: 'swap' }}
@@ -64,6 +53,9 @@
         --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         --font-heading-style: {{ settings.type_header_font.style }};
         --font-heading-weight: {{ settings.type_header_font.weight }};
+
+        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
 
         --color-base-text: {{ settings.colors_text.red }}, {{ settings.colors_text.green }}, {{ settings.colors_text.blue }};
         --color-base-background-1: {{ settings.colors_background_1.red }}, {{ settings.colors_background_1.green }}, {{ settings.colors_background_1.blue }};
@@ -91,7 +83,7 @@
 
       html {
         box-sizing: border-box;
-        //font-size: 62.5%;
+        font-size: calc(var(--font-body-scale) * 62.5%);
         height: 100%;
       }
 
@@ -103,7 +95,7 @@
         margin: 0;
         font-size: 1.5rem;
         letter-spacing: 0.06rem;
-        line-height: 1.8;
+        line-height: calc(1 + 0.8 / var(--font-body-scale));
         font-family: var(--font-body-family);
         font-style: var(--font-body-style);
         font-weight: var(--font-body-weight);
@@ -117,7 +109,6 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    {{ 'tailwind.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -126,19 +117,19 @@
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
 
-    {% comment %} {%- if settings.predictive_search_enabled -%}
+    {%- if settings.predictive_search_enabled -%}
       <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
-    {%- endif -%} {% endcomment %}
+    {%- endif -%}
 
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
   </head>
 
-  <body>
-    <a class="skip-to-content-link btn-primary visually-hidden" href="#MainContent">
+  <body class="gradient">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
 
-    {% section 'aaa-announcement' %}
+    {% section 'announcement-bar' %}
     {% section 'header' %}
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
@@ -151,6 +142,7 @@
     </ul>
 
     <script>
+      window.shopUrl = '{{ shop.url }}';
       window.routes = {
         cart_add_url: '{{ routes.cart_add_url }}',
         cart_change_url: '{{ routes.cart_change_url }}',
@@ -160,7 +152,7 @@
 
       window.cartStrings = {
         error: `{{ 'sections.cart.cart_error' | t }}`,
-        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t }}`
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
       }
 
       window.variantStrings = {
